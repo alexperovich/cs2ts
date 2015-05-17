@@ -1,6 +1,6 @@
 # CS2TS - CSharp to TypeScript #
 CS2TS is a simple program that takes C# source as input and produces a typescript module or definition file with types suitable for use with Json serialized data from the input CSharp types.
-*TODO: Add nuget link*
+It can be downloaded from nuget at https://www.nuget.org/packages/CS2TS
 
 ## Objectives ##
  * Produce proper TypeScript definitions from POD classes, structures, and interfaces.
