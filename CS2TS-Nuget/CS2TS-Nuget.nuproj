@@ -26,16 +26,15 @@
     <Title>CSharp To Typescript</Title>
     <Authors>Alex Perovich</Authors>
     <Owners>Alex Perovich</Owners>
-    <Summary>CS2TS-Nuget</Summary>
-    <Description>CS2TS-Nuget</Description>
+    <Summary>CSharp to TypeScript compiler.</Summary>
+    <Description>Translate your CSharp data classes to Typescript definitions.</Description>
     <ReleaseNotes>
     </ReleaseNotes>
-    <ProjectUrl>
-    </ProjectUrl>
-    <LicenseUrl>
-    </LicenseUrl>
+    <ProjectUrl>https://github.com/alexperovich/cs2ts</ProjectUrl>
+    <LicenseUrl>https://github.com/alexperovich/cs2ts/blob/master/LICENSE</LicenseUrl>
     <Copyright>Copyright © Alex Perovich</Copyright>
     <Tags>C#;CSharp;Typescript</Tags>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="build\CS2TS.targets" />
