@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>8d9c370f-e27c-4c1f-86a7-97b33da3f0de</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(BuildingInsideVisualStudio)' != 'true'">$(MSBuildProjectDirectory)\..\packages\NuProj.0.9.3-beta\tools\</NuProjPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>CS2TS</Id>
+    <Version>1.0.0-beta1</Version>
+    <Title>CSharp To Typescript</Title>
+    <Authors>Alex Perovich</Authors>
+    <Owners>Alex Perovich</Owners>
+    <Summary>CS2TS-Nuget</Summary>
+    <Description>CS2TS-Nuget</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>
+    </ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © Alex Perovich</Copyright>
+    <Tags>C#;CSharp;Typescript</Tags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="build\CS2TS.targets" />
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CS2TS\CS2TS.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+  <Target Name="ExpandProjectReferences" DependsOnTargets="SplitProjectReferences" Inputs="%(_NonNuProjProjectReference.Identity)" Outputs="fake">
+    <MSBuild Targets="$(ProjectOutputGroups)" Projects="%(_NonNuProjProjectReference.Identity)" Properties="$(ProjectProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="_NonNuProjProjectOutput" />
+    </MSBuild>
+    <MSBuild Targets="GetTargetPath" Projects="%(_NonNuProjProjectReference.Identity)" Properties="$(ProjectProperties)">
+      <Output TaskParameter="TargetOutputs" PropertyName="_NonNuProjProjectTargetPath" />
+    </MSBuild>
+    <PropertyGroup>
+      <_NonNuProjProjectTargetPath>$([System.IO.Path]::GetDirectoryName($(_NonNuProjProjectTargetPath)))\</_NonNuProjProjectTargetPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput)" Condition="!Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') " />
+    </ItemGroup>
+    <ItemGroup>
+      <Tool Include="@(_NonNuProjProjectOutput)">
+        <TargetPath>%(Filename)%(Extension)</TargetPath>
+      </Tool>
+    </ItemGroup>
+  </Target>
+  <Target Name="GetPackageDependencies">
+  </Target>
+</Project>

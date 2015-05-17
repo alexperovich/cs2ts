@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CS2TSToolDirectory Condition="'$(CS2TSToolDirectory)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\tools\'))</CS2TSToolDirectory>
+    <CS2TSToolPath Condition="'$(CS2TSToolPath)' == ''">$(CS2TSToolDirectory)\CS2TS.exe</CS2TSToolPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CS2TSTypeScriptOutput Condition="'$(CS2TSTypeScriptDefinitionFile)' == ''">$(MSBuildProjectDirectory)\Scripts\generatedTypes.ts</CS2TSTypeScriptOutput>
+  </PropertyGroup>
+
+  <Target BeforeTargets="PreComputeCompileTypeScript;CoreCompile" Name="GenerateTypeDeclarations" Inputs="@(Compile->WithMetadataValue('ProcessToTypescript', 'true'));@(CS2TSInputFile)" Outputs="$(CS2TSTypeScriptDefinitionFile)"
+          DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <CS2TSInputFile Include="@(Compile->WithMetadataValue('ProcessToTypescript', 'true'))"/>
+    </ItemGroup>
+    <PropertyGroup>
+      <CS2TSReferencePaths>@(ReferencePath -> '-r "%(FullPath)"', ' ')</CS2TSReferencePaths>
+      <InputFileList>@(CS2TSInputFile -> '"%(FullPath)"', ' ')</InputFileList>
+    </PropertyGroup>
+    <Exec Command='"$(CS2TSToolPath)" -o "$(CS2TSTypeScriptOutput)" $(CS2TSReferencePaths) $(InputFileList)'/>
+    <ItemGroup>
+      <FileWrites Include="$(CS2TSTypeScriptOutput)"/>
+      <TypeScriptCompile Include="$(CS2TSTypeScriptOutput)"/>
+    </ItemGroup>
+    <PropertyGroup>
+      <InputFileList/>
+      <CS2TSReferencePaths/>
+    </PropertyGroup>
+  </Target>
+</Project>

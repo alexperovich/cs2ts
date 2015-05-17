@@ -1,0 +1,1 @@
+﻿This nuget package provides an MSBuild target for producing Typescript declaration files for data transfer classes and structs defined in C# files. 
