@@ -22,7 +22,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>CS2TS</Id>
-    <Version>1.0.0-beta1</Version>
+    <Version>1.0.0-beta2</Version>
     <Title>CSharp To Typescript</Title>
     <Authors>Alex Perovich</Authors>
     <Owners>Alex Perovich</Owners>

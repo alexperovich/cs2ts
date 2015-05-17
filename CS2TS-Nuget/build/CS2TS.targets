@@ -5,10 +5,11 @@
     <CS2TSToolPath Condition="'$(CS2TSToolPath)' == ''">$(CS2TSToolDirectory)\CS2TS.exe</CS2TSToolPath>
   </PropertyGroup>
   <PropertyGroup>
-    <CS2TSTypeScriptOutput Condition="'$(CS2TSTypeScriptDefinitionFile)' == ''">$(MSBuildProjectDirectory)\Scripts\generatedTypes.ts</CS2TSTypeScriptOutput>
+    <CS2TSTypeScriptOutput Condition="'$(CS2TSTypeScriptOutput)' == ''">$(MSBuildProjectDirectory)\Scripts\generatedTypes.ts</CS2TSTypeScriptOutput>
   </PropertyGroup>
 
-  <Target BeforeTargets="PreComputeCompileTypeScript;CoreCompile" Name="GenerateTypeDeclarations" Inputs="@(Compile->WithMetadataValue('ProcessToTypescript', 'true'));@(CS2TSInputFile)" Outputs="$(CS2TSTypeScriptDefinitionFile)"
+  <Target BeforeTargets="PreComputeCompileTypeScript;CoreCompile" Name="GenerateTypeDeclarations" Inputs="@(Compile->WithMetadataValue('ProcessToTypescript', 'true'));@(CS2TSInputFile)"
+          Outputs="$(CS2TSTypeScriptOutput)"
           DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <CS2TSInputFile Include="@(Compile->WithMetadataValue('ProcessToTypescript', 'true'))"/>
