@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -18,6 +19,94 @@ namespace CS2TS
       _output = output;
       _semanticModel = semanticModel;
       _isDeclaration = isDeclaration;
+      Extends = "";
+    }
+
+    public string Extends { get; private set; }
+
+    public override void VisitClassDeclaration(ClassDeclarationSyntax node)
+    {
+      VisitTypeDeclaration(node);
+      base.VisitClassDeclaration(node);
+    }
+
+    public override void VisitStructDeclaration(StructDeclarationSyntax node)
+    {
+      VisitTypeDeclaration(node);
+      base.VisitStructDeclaration(node);
+    }
+
+    public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+    {
+      VisitTypeDeclaration(node);
+      base.VisitInterfaceDeclaration(node);
+    }
+
+    private void VisitTypeDeclaration(TypeDeclarationSyntax node)
+    {
+      var typeSymbol = _semanticModel.GetDeclaredSymbol(node);
+      ProcessTypeSymbol(typeSymbol);
+    }
+
+    private void ProcessTypeSymbol(INamedTypeSymbol typeSymbol)
+    {
+      ImmutableArray<INamedTypeSymbol> interfaceList;
+      if (typeSymbol.BaseType == null || !typeSymbol.BaseType.OriginalDefinition.DeclaringSyntaxReferences.Any())
+      {
+        interfaceList = typeSymbol.AllInterfaces;
+      }
+      else
+      {
+        interfaceList = typeSymbol.Interfaces;
+      }
+      var dictionary = interfaceList.FirstOrDefault(type => type.MetadataName == "IDictionary`2");
+      var enumerable = interfaceList.FirstOrDefault(type => type.MetadataName == "IEnumerable`1");
+      if (dictionary != null)
+      {
+        var keyType = dictionary.TypeArguments[0];
+        var valueType = dictionary.TypeArguments[1];
+        if (keyType.SpecialType == SpecialType.System_String)
+        {
+          _output.WriteLine("  [key: string]: {0};", GetTypescriptType(valueType));
+        }
+        else if (IsNumber(keyType))
+        {
+          _output.WriteLine("  [key: number]: {0};", GetTypescriptType(valueType));
+        }
+      }
+      else if (enumerable != null)
+      {
+        var type = enumerable.TypeArguments[0];
+        _output.WriteLine("  [index: number]: {0};", GetTypescriptType(type));
+      }
+      if (typeSymbol.BaseType == null)
+        return;
+      var baseType = typeSymbol.BaseType.OriginalDefinition;
+      if (baseType.DeclaringSyntaxReferences.Any())
+      {
+        Extends = string.Format(" extends {0}", baseType.Name);
+      }
+    }
+
+    private static bool IsNumber(ITypeSymbol type)
+    {
+      switch (type.SpecialType)
+      {
+        case SpecialType.System_Char:
+        case SpecialType.System_SByte:
+        case SpecialType.System_Byte:
+        case SpecialType.System_Int16:
+        case SpecialType.System_UInt16:
+        case SpecialType.System_Int32:
+        case SpecialType.System_UInt32:
+        case SpecialType.System_Int64:
+        case SpecialType.System_UInt64:
+        case SpecialType.System_Decimal:
+        case SpecialType.System_Single:
+        case SpecialType.System_Double:
+          return true;
+      }
+      return false;
     }
 
     public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)

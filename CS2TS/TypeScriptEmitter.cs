@@ -21,11 +21,19 @@ namespace CS2TS
 
     public void Emit(TypeDeclarationSyntax typeDeclarationSyntax)
     {
-      _output.WriteLine("{1} interface {0} {{", typeDeclarationSyntax.Identifier.Text, _isDeclaration ? "declare" : "export");
-      var emitter = new TypeScriptMemberEmitter(_output, _semanticModel, _isDeclaration);
-      emitter.Visit(typeDeclarationSyntax);
-      _output.WriteLine("}");
-      _output.WriteLine();
+      using (var propertyWriter = new StringWriter())
+      {
+        var emitter = new TypeScriptMemberEmitter(propertyWriter, _semanticModel, _isDeclaration);
+        emitter.Visit(typeDeclarationSyntax);
+        _output.WriteLine(
+          "{1} interface {0}{2} {{",
+          typeDeclarationSyntax.Identifier.Text,
+          _isDeclaration ? "declare" : "export",
+          emitter.Extends);
+        _output.Write(propertyWriter.ToString());
+        _output.WriteLine("}");
+        _output.WriteLine();
+      }
     }
   }
 }
