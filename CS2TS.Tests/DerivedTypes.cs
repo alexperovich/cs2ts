@@ -38,6 +38,7 @@ namespace Foo
   public class Test3 : Test2
   {{
     public {0} Prop {{ get; set; }}
+    public Dictionary<string, {0}> Dict {{ get; set; }}
   }}
 }}
 ", cSharpType);
@@ -54,6 +55,7 @@ namespace Foo
 
 {2} interface Test3 extends Test2 {{
   Prop{1}: {0};
+  Dict?: {{ [key: string]: {0}; }};
 }}
 
 ", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);

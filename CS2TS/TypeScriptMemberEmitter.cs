@@ -152,6 +152,20 @@ namespace CS2TS
 
     private string GetTypescriptType(ITypeSymbol type)
     {
+      if (type.MetadataName == "IDictionary`2")
+      {
+        var dictionaryType = (INamedTypeSymbol) type;
+        var keyType = dictionaryType.TypeArguments[0];
+        var valueType = dictionaryType.TypeArguments[1];
+        if (keyType.SpecialType == SpecialType.System_String)
+        {
+          return string.Format("{{ [key: string]: {0}; }}", GetTypescriptType(valueType));
+        }
+        if (IsNumber(keyType))
+        {
+          return string.Format("{{ [key: number]: {0}; }}", GetTypescriptType(valueType));
+        }
+      }
       if (type.TypeKind == TypeKind.Array)
       {
         IArrayTypeSymbol arr = (IArrayTypeSymbol) type;
@@ -190,13 +204,12 @@ namespace CS2TS
         case SpecialType.System_Collections_Generic_IReadOnlyList_T:
           var namedType = (INamedTypeSymbol) type;
           return GetTypescriptType(namedType.TypeArguments.First()) + "[]";
-        default:
-          if (_semanticModel.Compilation.Assembly.TypeNames.Any(tn => type.Name == tn))
-          {
-            return type.Name;
-          }
-          return type.AllInterfaces.Select(GetTypescriptType).FirstOrDefault(t => t != "any") ?? "any";
       }
+      if (_semanticModel.Compilation.Assembly.TypeNames.Any(tn => type.Name == tn))
+      {
+        return type.Name;
+      }
+      return type.AllInterfaces.Select(GetTypescriptType).FirstOrDefault(t => t != "any") ?? "any";
     }
 
     private static bool IsNullable(ITypeSymbol type)
