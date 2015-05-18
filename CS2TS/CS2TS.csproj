@@ -54,8 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TypeCollector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeScriptEmitter.cs" />
+    <Compile Include="TypeScriptMemberEmitter.cs" />
+    <Compile Include="TypeScriptProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
