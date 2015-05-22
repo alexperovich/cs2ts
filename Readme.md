@@ -43,22 +43,22 @@ namespace Foo
 
 ```
 ```TypeScript
-declare interface Point {
+interface Point {
   X: number;
   Y: number;
 }
 
-declare interface IColor {
+interface IColor {
   value?: string;
 }
 
-declare interface Square {
+interface Square {
   TopRight: Point;
   LowerLeft: Point;
   Fill?: IColor;
 }
 
-declare interface Path {
+interface Path {
   points?: Point[];
 }
 ```
