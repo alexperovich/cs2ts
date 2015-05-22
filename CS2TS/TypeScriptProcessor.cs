@@ -51,6 +51,10 @@ namespace CS2TS
         {
           emitter.Emit(type);
         }
+        foreach (var e in collector.Enums)
+        {
+          emitter.Emit(e);
+        }
       }
     }
 

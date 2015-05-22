@@ -45,20 +45,20 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(input);
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   [key: number]: {0};
 }}
 
-{2} interface Test2 {{
+{2}interface Test2 {{
   [key: string]: {0};
 }}
 
-{2} interface Test3 extends Test2 {{
+{2}interface Test3 extends Test2 {{
   Prop{1}: {0};
   Dict?: {{ [key: string]: {0}; }};
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export "), output);
     }
   }
 }

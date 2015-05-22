@@ -61,6 +61,7 @@
     <Compile Include="Arrays.cs" />
     <Compile Include="ClassTypeMembers.cs" />
     <Compile Include="DerivedTypes.cs" />
+    <Compile Include="EnumTests.cs" />
     <Compile Include="PlainStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeInformation.cs" />

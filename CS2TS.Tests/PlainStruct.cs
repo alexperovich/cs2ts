@@ -45,11 +45,11 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(input);
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   Prop{1}: {0};
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export "), output);
     }
 
     [Theory]
@@ -70,12 +70,12 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(input);
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   x{1}: {0};
   y{1}: {0};
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export "), output);
     }
 
     [Theory]
@@ -98,11 +98,11 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(new[] {input}, new[] {typeof (JsonPropertyAttribute).Assembly.Location});
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   foo{1}: {0};
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export "), output);
     }
 
     [Theory]
@@ -126,11 +126,11 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(new[] {input}, new[] {typeof (DataMemberAttribute).Assembly.Location});
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   foo{1}: {0};
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export "), output);
     }
   }
 }

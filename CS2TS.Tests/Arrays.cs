@@ -57,11 +57,11 @@ namespace Foo
 
         var processor = new TypeScriptProcessor(new []{input}, new[] {typeof(HashSet<>).Assembly.Location});
         var output = processor.GetTypescriptAsString(generateDeclarations);
-        Assert.Equal(string.Format(@"{1} interface Test {{
+        Assert.Equal(string.Format(@"{1}interface Test {{
   Prop?: {0}[];
 }}
 
-", expectedTypescriptType, generateDeclarations ? "declare" : "export"), output);
+", expectedTypescriptType, generateDeclarations ? "" : "export "), output);
     }
   }
 }

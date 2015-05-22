@@ -9,6 +9,7 @@ namespace CS2TS
   internal class TypeCollector : CSharpSyntaxWalker
   {
     public readonly List<TypeDeclarationSyntax> Types = new List<TypeDeclarationSyntax>();
+    public readonly List<EnumDeclarationSyntax> Enums = new List<EnumDeclarationSyntax>(); 
 
     public override void VisitClassDeclaration(ClassDeclarationSyntax node)
     {
@@ -26,6 +27,12 @@ namespace CS2TS
     {
       Types.Add(node);
       base.VisitInterfaceDeclaration(node);
+    }
+
+    public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
+    {
+      Enums.Add(node);
+      base.VisitEnumDeclaration(node);
     }
   }
 }

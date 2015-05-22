@@ -53,15 +53,15 @@ namespace Foo
 
       var processor = new TypeScriptProcessor(input);
       var output = processor.GetTypescriptAsString(generateDeclarations);
-      Assert.Equal(string.Format(@"{2} interface Test {{
+      Assert.Equal(string.Format(@"{2}interface Test {{
   Prop{1}: {0};
 }}
 
-{2} interface Test2 {{
+{2}interface Test2 {{
   Prop{3}: Test;
 }}
 
-", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "declare" : "export", typeType == "struct" ? "" : "?"), output);
+", typescriptType, cSharpType.ToLower().Contains("string") ? "?" : "", generateDeclarations ? "" : "export ", typeType == "struct" ? "" : "?"), output);
     }
   }
 }
